@@ -2,21 +2,21 @@ import pandas as pd
 import os
 
 
-def getDataSets():
-    currPath = os.path.dirname(os.path.abspath(__file__))
+def get_data_sets():
+    curr_path = os.path.dirname(os.path.abspath(__file__))
 
     remote_white = 'http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality  \
                     /winequality-white.csv'
     remote_red = 'http://archive.ics.uci.edu/ml/machine-learning-databases \
                     /wine-quality/winequality-red.csv'
 
-    local_white = currPath + '\\data\\white.csv'
-    local_red = currPath + '\\data\\red.csv'
+    local_white = curr_path + '\\data\\white.csv'
+    local_red = curr_path + '\\data\\red.csv'
 
     return remote_white, remote_red, local_white, local_red
 
 
-def loadWineData(local, link):
+def load_wine_data(local, link):
     if local == '' or link == '':
         return None
 
