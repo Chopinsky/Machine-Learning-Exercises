@@ -2,9 +2,11 @@ import dataio
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 
 
 defaultSeed = 537
+splitSeed = 142
 
 
 def draw_hist(white, red):
@@ -84,8 +86,15 @@ def identify_wine(peek):
     sns.heatmap(corr,
                 xticklabels=corr.columns.values,
                 yticklabels=corr.columns.values)
-    plt.show()
+    #plt.show()
+    #print(corr)
 
-    print(corr)
+    X = wine_set.ix[:, 0:11]
+    y = np.ravel(wine_set.type)
+
+    # split the data up into train/test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                        test_size=0.3,
+                                                        random_state=splitSeed)
 
     print("Done!")
