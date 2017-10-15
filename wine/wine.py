@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 
 defaultSeed = 537
@@ -96,5 +97,13 @@ def identify_wine(peek):
     X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                         test_size=0.3,
                                                         random_state=splitSeed)
+
+    # define scaler
+    scaler = StandardScaler().fit(X_train)
+
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
+    print(X_train)
+    print(X_test)
 
     print("Done!")
