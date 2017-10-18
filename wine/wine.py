@@ -103,7 +103,5 @@ def identify_wine(peek):
 
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
-    print(X_train)
-    print(X_test)
 
     print("Done!")

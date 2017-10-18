@@ -1,2 +1,5 @@
 *.csv
+*.pyc
 .idea
+wine/.vscode/
+wine/__pycache__/
