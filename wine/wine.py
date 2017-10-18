@@ -4,6 +4,8 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+#from keras.models import Sequential
+#from keras.layers import Dense
 
 
 defaultSeed = 537
@@ -103,5 +105,27 @@ def identify_wine(peek):
 
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
+
+    # uncomment below if keras package is isntalled
+
+    # Build model
+    #model = Sequential();
+    #model.add(Dense(12, activation='relu', input_shape=(11,)))  #input layer
+    #model.add(Dense(8, activation='relu'))                      #hidden layer
+    #model.add(Dense(1, activation='sigmoid'))                   #output layer
+
+    # View model summary
+    #model.output_shape
+    #model.summary()
+    #model.get_config()
+    #model.get_weight()
+
+    # run/train model
+    #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    #model.fit(X_train, y_train, epochs=20, batch_size=1, verbose=1)
+
+    # check model with test set
+    #y_pred = model.predict(X_test)
+    #print(y_pred, y_test)
 
     print("Done!")
