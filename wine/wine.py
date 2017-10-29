@@ -4,9 +4,12 @@ import numpy as np
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-#from keras.models import Sequential
-#from keras.layers import Dense
 
+'''
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.metrics import confusion_matrix, precision_score, recall_score
+'''
 
 defaultSeed = 537
 splitSeed = 142
@@ -106,26 +109,72 @@ def identify_wine(peek):
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
 
-    # uncomment below if keras package is isntalled
+    model = run_vanilla_neuro_network(X_train, y_train, X_test, y_test)
+    print("Done!")
 
+
+def run_vanilla_neuro_network(X_train, y_train, X_test, y_test):
+    '''uncomment below if keras package is isntalled
+    ############ Neural Network ############
+    
     # Build model
-    #model = Sequential();
-    #model.add(Dense(12, activation='relu', input_shape=(11,)))  #input layer
-    #model.add(Dense(8, activation='relu'))                      #hidden layer
-    #model.add(Dense(1, activation='sigmoid'))                   #output layer
+    model = Sequential();
+    model.add(Dense(12, activation='relu', input_shape=(11,)))  #input layer
+    model.add(Dense(8, activation='relu'))                      #hidden layer
+    model.add(Dense(1, activation='sigmoid'))                   #output layer
 
     # View model summary
-    #model.output_shape
-    #model.summary()
-    #model.get_config()
-    #model.get_weight()
+    model.output_shape
+    model.summary()
+    model.get_config()
+    model.get_weight()
 
     # run/train model
-    #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    #model.fit(X_train, y_train, epochs=20, batch_size=1, verbose=1)
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.fit(X_train, y_train, epochs=20, batch_size=1, verbose=1)
 
     # check model with test set
-    #y_pred = model.predict(X_test)
-    #print(y_pred, y_test)
+    y_pred = model.predict(X_test)
+    print(y_pred, y_test)
+    
+    # check score
+    score = model.evaluate(X_test, y_test, verbose=1)
+    print(score)
+    
+    # confusion matrix
+    confusion_matrix(y_test, y_pred)
+    # precision
+    precision_score(y_test, y_pred)
+    # recall 
+    recall_score(y_test, y_pred)
+    # F1 score
+    f1_score(y_test, y_pred)
+    # cohen's kappa
+    cohen_kappa_score(y_test, y_pred)
+
+    '''
+
+    print("Model is trained!")
+
+    return model
+
+
+def run_updated_neuro_network(X_train, y_train, X_test, y_test):
+    '''uncomment below if keras package is isntalled
+    ############ k fold validation ############
+    
+    # quality improvement
+    y = wine_set.quality
+    X = wine_set.drop('quality', axis=1)
+    
+    # scale the data with 'StandardScaler'
+    X = StandardScaler().fit_transform(X)
+    
+    # create model
+    
+    ###########################################
+    '''
 
     print("Done!")
+
+    return model
