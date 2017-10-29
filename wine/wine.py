@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.metrics import confusion_matrix, precision_score, recall_score
+from sklearn.model_selection import StratifiedKFold
 '''
 
 defaultSeed = 537
@@ -95,13 +96,20 @@ def identify_wine(peek):
     #plt.show()
     #print(corr)
 
+    model = run_neuro_network(wine_set)
+    # model = run_kfold_neuro_network(wine_set)
+
+    print("Done!")
+
+
+def run_neuro_network(wine_set):
+    # create the X, y array
     X = wine_set.ix[:, 0:11]
     y = np.ravel(wine_set.type)
 
     # split the data up into train/test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                        test_size=0.3,
-                                                        random_state=splitSeed)
+    X_train, X_test, y_train, y_test = \
+        train_test_split(X, y, test_size=0.3, random_state=splitSeed)
 
     # define scaler
     scaler = StandardScaler().fit(X_train)
@@ -109,11 +117,6 @@ def identify_wine(peek):
     X_train = scaler.transform(X_train)
     X_test = scaler.transform(X_test)
 
-    model = run_vanilla_neuro_network(X_train, y_train, X_test, y_test)
-    print("Done!")
-
-
-def run_vanilla_neuro_network(X_train, y_train, X_test, y_test):
     '''uncomment below if keras package is isntalled
     ############ Neural Network ############
     
@@ -124,7 +127,7 @@ def run_vanilla_neuro_network(X_train, y_train, X_test, y_test):
     model.add(Dense(1, activation='sigmoid'))                   #output layer
 
     # View model summary
-    model.output_shape
+    model.output_shape()
     model.summary()
     model.get_config()
     model.get_weight()
@@ -152,6 +155,7 @@ def run_vanilla_neuro_network(X_train, y_train, X_test, y_test):
     # cohen's kappa
     cohen_kappa_score(y_test, y_pred)
 
+    ###########################################
     '''
 
     print("Model is trained!")
@@ -159,22 +163,36 @@ def run_vanilla_neuro_network(X_train, y_train, X_test, y_test):
     return model
 
 
-def run_updated_neuro_network(X_train, y_train, X_test, y_test):
-    '''uncomment below if keras package is isntalled
-    ############ k fold validation ############
-    
+def run_kfold_neuro_network(wine_set):
     # quality improvement
     y = wine_set.quality
     X = wine_set.drop('quality', axis=1)
     
     # scale the data with 'StandardScaler'
     X = StandardScaler().fit_transform(X)
+
+    '''uncomment below if keras package is isntalled
+    ############ k fold validation ############
     
-    # create model
+    seed = 7
+    np.random.seed(seed)
+    
+    kfold = StratfiedKFold(n_splits=5, shuffle=True, random_state=seed)
+    for train, test in kfold.split(X, Y):
+        # define model
+        model = Sequential()
+        model.add(Dense(64, input_dim=12, activation='relu'))  # input layer
+        model.add(Dense(1))                                    # output layer
+        model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+        model.fit(X[train], Y[train], epochs=10, verbose=1)
+        # eval model
+        mse_value, mae_value = model.evaluate(X[test], Y[test], verbose=0)
+        print(mse_value)
+        print(mae_value)
     
     ###########################################
     '''
 
-    print("Done!")
+    print("Model is trained!")
 
     return model
