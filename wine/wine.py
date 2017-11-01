@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 '''
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.optimizers import RMSprop
 from sklearn.metrics import confusion_matrix, precision_score, recall_score
 from sklearn.model_selection import StratifiedKFold
 '''
@@ -182,13 +183,16 @@ def run_kfold_neuro_network(wine_set):
         # define model
         model = Sequential()
         model.add(Dense(64, input_dim=12, activation='relu'))  # input layer
+        model.add(Dense(64, activation='relu'))                # input layer
         model.add(Dense(1))                                    # output layer
-        model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+        rmsprop = RMSprop(lr=0.0001)
+        model.compile(optimizer=rmsprop, loss='mse', metrics=['mae'])
         model.fit(X[train], Y[train], epochs=10, verbose=1)
-        # eval model
-        mse_value, mae_value = model.evaluate(X[test], Y[test], verbose=0)
-        print(mse_value)
-        print(mae_value)
+
+    # eval model
+    mse_value, mae_value = model.evaluate(X[test], Y[test], verbose=0)
+    print(mse_value)
+    print(mae_value)
     
     ###########################################
     '''
