@@ -3,3 +3,4 @@
 .idea
 wine/.vscode/
 wine/__pycache__/
+venv/

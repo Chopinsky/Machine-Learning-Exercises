@@ -4,11 +4,13 @@ from sklearn.externals.six import StringIO
 #import pydot
 import numpy as np
 
+
 def train():
     feature = [[140, 1], [130, 1], [150, 0], [170, 0]]
     labels = [0, 0, 1, 1]
     clf = tree.DecisionTreeClassifier()
     return clf.fit(feature, labels)
+
 
 def test(input):
     clf = train()
@@ -21,6 +23,7 @@ def test(input):
         print("Orange")
 
 #test([160, 0])
+
 
 def iris_train():
     iris = load_iris()
@@ -51,6 +54,7 @@ def iris_train():
 
     return clf
 
+
 def visualization():
     clf = iris_train()
     iris = load_iris()
@@ -64,5 +68,6 @@ def visualization():
 
     # graph = pydot.graph_from_dot_data(dot_data.getvalue())
     # graph.write_pdf("iris.pdf")
+
 
 visualization()
