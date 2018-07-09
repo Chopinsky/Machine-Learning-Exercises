@@ -43,9 +43,26 @@ def process_image(args):
 
         names.append(name)
 
-    return names, boxes
+    return image, names, boxes
+
+
+def mark_faces(image, names, boxes, show_img=True):
+    for ((top, right, bottom, left), name) in zip(boxes, names):
+        cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
+
+        if (top - 15) > 15:
+            label_y = top - 15
+        else:
+            label_y = top + 15
+
+        cv2.putText(image, name, (left, label_y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+
+    if show_img:
+        cv2.imshow("Image", image)
+        cv2.waitKey(0)
 
 
 if __name__ == '__main__':
     args = parse_args()
-    names, boxes = process_image(args)
+    image, names, boxes = process_image(args)
+    mark_faces(image, names, boxes)
