@@ -16,13 +16,7 @@ def parse_args():
     return vars(ap.parse_args())
 
 
-def process_image(args):
-    print("info: processing image...")
-    data = pickle.loads(open(args["encodings"], "rb").read())
-
-    image = cv2.imread(args["image"])
-    rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
+def process_image(args, data, rgb):
     boxes = face_recognition.face_locations(rgb, model=args["detection_method"])
     encodings = face_recognition.face_encodings(rgb, boxes)
 
@@ -43,10 +37,10 @@ def process_image(args):
 
         names.append(name)
 
-    return image, names, boxes
+    return names, boxes
 
 
-def mark_faces(image, names, boxes, show_img=True):
+def mark_faces(image, names, boxes, display_to_screen=False):
     for ((top, right, bottom, left), name) in zip(boxes, names):
         cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
 
@@ -57,12 +51,25 @@ def mark_faces(image, names, boxes, show_img=True):
 
         cv2.putText(image, name, (left, label_y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
 
-    if show_img:
+    if display_to_screen:
         cv2.imshow("Image", image)
         cv2.waitKey(0)
 
 
+def load_data():
+    print("info: processing image...")
+    data = pickle.loads(open(args["encodings"], "rb").read())
+
+    image = cv2.imread(args["image"])
+    rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    return image, rgb, data
+
+
 if __name__ == '__main__':
     args = parse_args()
-    image, names, boxes = process_image(args)
+
+    image, rgb, data = load_data()
+    names, boxes = process_image(args, data, rgb)
+
     mark_faces(image, names, boxes)
