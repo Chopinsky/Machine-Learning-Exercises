@@ -1,6 +1,6 @@
 *.csv
 *.pyc
 .idea
-wine/.vscode/
-wine/__pycache__/
+.vscode/
+__pycache__/
 venv/
